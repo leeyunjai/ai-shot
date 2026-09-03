@@ -2,142 +2,163 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AI 샷 — 촬영실</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1,user-scalable=no">
+<title>AI 샷</title>
 <meta name="description" content="손짓·표정·포즈·소리로 셔터를 누르는 카메라. 브라우저 안에서만 돌아갑니다.">
 <link rel="icon" type="image/png" href="assets/img/favicon.png">
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="theme-color" content="#FBF7EF">
-<link rel="stylesheet" href="assets/fonts/pretendard.css?v=1">
-<link rel="stylesheet" href="css/all.min.css?v=1">
-<link rel="stylesheet" href="css/ui.css?v=1">
-<link rel="stylesheet" href="css/theme-maker.css?v=1">
-<link rel="stylesheet" href="css/app.css?v=1">
+<meta name="theme-color" content="#0A0D0F">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="stylesheet" href="assets/fonts/pretendard.css?v=2">
+<link rel="stylesheet" href="css/all.min.css?v=2">
+<link rel="stylesheet" href="css/app.css?v=2">
 </head>
-<body>
+<body class="app">
+<div id="shell">
 
-<header data-tab="index.html"></header>
+  <div id="stage">
+    <div id="frame">
+      <video id="camVid" playsinline muted></video>
+      <canvas id="bgCv" style="display:none"></canvas>
+      <canvas id="ovCv"></canvas>
+    </div>
+    <canvas id="micCv" style="display:none"></canvas>
+    <div id="camOff"><i class="fa-solid fa-video-slash fa-2x"></i><span>셔터를 눌러 카메라를 켜요</span></div>
+    <div id="cdown"></div>
+    <div id="flash"></div>
+  </div>
 
-<div id="glMain">
+  <header data-tab="index.html"></header>
 
-  <div class="pan" id="panL">
-    <div class="ph"><i class="fa-solid fa-hand-sparkles"></i>셔터</div>
-    <div class="pb">
-      <div class="pb-label">무엇으로 찍을까요?</div>
-      <div class="srcpick">
-        <button class="db on" data-src="hand"><i class="fa-solid fa-hand"></i> 손</button>
-        <button class="db" data-src="face"><i class="fa-solid fa-face-smile"></i> 얼굴</button>
-        <button class="db" data-src="pose"><i class="fa-solid fa-person"></i> 포즈</button>
-        <button class="db" data-src="sound"><i class="fa-solid fa-microphone"></i> 소리</button>
+  <div class="srcpick">
+    <button class="db on" data-src="hand"><i class="fa-solid fa-hand"></i>손</button>
+    <button class="db" data-src="face"><i class="fa-solid fa-face-smile"></i>얼굴</button>
+    <button class="db" data-src="pose"><i class="fa-solid fa-person"></i>포즈</button>
+    <button class="db" data-src="sound"><i class="fa-solid fa-microphone"></i>소리</button>
+  </div>
+
+  <div id="hud">
+    <div id="armBadge"><i class="fa-solid fa-bolt"></i><span id="armTxt">준비</span></div>
+    <div id="liveNow"></div>
+  </div>
+
+  <div id="sheet">
+    <div id="grip"></div>
+
+    <div class="gauge" id="gaugeWrap">
+      <div class="gtrack"><div class="gfill" id="gaugeFill"></div></div>
+      <div class="glb"><span id="gaugeLabel">동작을 기다리는 중</span><span class="num" id="gaugePct"></span></div>
+    </div>
+
+    <div class="modetabs">
+      <button class="mt on" data-pane="0"><i class="fa-solid fa-camera"></i>촬영</button>
+      <button class="mt" data-pane="1"><i class="fa-solid fa-graduation-cap"></i>학습</button>
+    </div>
+
+    <div id="paneView">
+      <div id="paneTrack">
+
+        <section class="pane" id="paneShoot">
+          <div class="pb-label">이 동작이면 찰칵</div>
+          <select class="inp" id="trigSel"></select>
+          <div class="hint" id="noModelHint" style="display:none">
+            <a href="#" id="goTrain">학습</a>에서 나만의 동작을 만들어요.
+          </div>
+
+          <div class="fld">
+            <div class="lb"><span>유지</span><span class="num" id="holdVal">0.8초</span></div>
+            <input type="range" id="holdSlider" min="2" max="30" value="8" step="1">
+          </div>
+          <div class="fld">
+            <div class="lb"><span>세기</span></div>
+            <div class="seg" id="cdSeg">
+              <button data-cd="0" class="on">바로</button>
+              <button data-cd="1">1초</button>
+              <button data-cd="3">3초</button>
+            </div>
+          </div>
+          <div class="fld">
+            <div class="lb"><span>장수</span></div>
+            <div class="seg" id="burstSeg">
+              <button data-burst="1" class="on">1</button>
+              <button data-burst="3">3</button>
+              <button data-burst="5">5</button>
+            </div>
+          </div>
+          <div class="fld">
+            <div class="lb"><span>배경</span></div>
+            <select class="inp" id="bgSel">
+              <option value="off">그대로</option>
+              <option value="erase">지우기</option>
+              <option value="blur">흐리기</option>
+              <option value="green">초록</option>
+              <option value="blue">파랑</option>
+            </select>
+          </div>
+
+          <label class="chk"><input type="checkbox" id="skelChk"><span>뼈대 선 같이 찍기</span></label>
+          <label class="chk"><input type="checkbox" id="beepChk" checked><span>찰칵 소리</span></label>
+
+          <div class="sec2">
+            <div class="st">방금 찍은 사진</div>
+            <div id="strip"></div>
+            <div class="hint" id="stripHint">동작을 하면 저절로 찍혀요.</div>
+          </div>
+        </section>
+
+        <section class="pane" id="paneTrain">
+          <div id="variantRow" style="display:none"></div>
+
+          <div class="row">
+            <input class="inp" id="clsName" type="text" placeholder="동작 이름" maxlength="20">
+            <button class="db" id="clsAdd" title="동작 더하기"><i class="fa-solid fa-plus"></i></button>
+          </div>
+          <div id="clsList"></div>
+          <div class="hint" id="clsHint">셔터로 쓸 동작과 평소 모습, 둘을 만들어요.</div>
+
+          <div class="selinfo" id="selInfo">동작을 골라 주세요</div>
+
+          <div class="sec2">
+            <button class="db go wide" id="trainBtn" disabled style="margin-top:0"><i class="fa-solid fa-graduation-cap"></i> 배우기</button>
+            <div class="prg">
+              <div class="lb"><span id="prgLabel">준비 중</span><span id="prgPct"></span></div>
+              <div class="track"><div class="fill" id="prgFill"></div></div>
+            </div>
+            <div id="chartBox" style="display:none"><canvas id="chart"></canvas></div>
+            <div id="resultSec" style="display:none">
+              <span class="accbig" id="accBig">0%</span><small id="accWord"></small>
+              <div class="hint" id="accNote"></div>
+            </div>
+          </div>
+
+          <div class="sec2">
+            <div class="st">저장</div>
+            <div class="row">
+              <input class="inp" id="mdlName" type="text" placeholder="이름" maxlength="30">
+              <button class="db go" id="mdlSave" disabled title="저장"><i class="fa-solid fa-floppy-disk"></i></button>
+            </div>
+          </div>
+        </section>
+
       </div>
+    </div>
 
-      <div class="sec2">
-        <div class="pb-label">이 동작이면 찰칵</div>
-        <select class="inp" id="trigSel" style="width:100%;cursor:pointer"></select>
-        <div class="hint" id="trigHint">배우지 않아도 되는 동작이에요.</div>
-        <div class="hint" id="noModelHint" style="display:none">
-          아직 만든 제스처가 없어요.<br>
-          <a href="train.html" style="color:var(--acc-ink)">제스처 만들기</a>에서 나만의 동작을 가르쳐 보세요.
-        </div>
-      </div>
-
-      <div class="sec2">
-        <div class="thr">
-          <div class="lb"><span>얼마나 유지할까요?</span><span class="num" id="holdVal">0.8초</span></div>
-          <input type="range" id="holdSlider" min="2" max="30" value="8" step="1">
-          <div class="hint" style="margin-top:5px">짧으면 잘 찍히고, 길면 잘못 찍히는 일이 줄어요.</div>
-        </div>
-      </div>
-
-      <div class="sec2">
-        <div class="pb-label">찰칵 하기 전에</div>
-        <div class="seg" id="cdSeg">
-          <button data-cd="0" class="on">바로</button>
-          <button data-cd="1">1초</button>
-          <button data-cd="3">3초</button>
-        </div>
-        <div class="pb-label" style="margin-top:11px">몇 장 찍을까요?</div>
-        <div class="seg" id="burstSeg">
-          <button data-burst="1" class="on">1장</button>
-          <button data-burst="3">3장</button>
-          <button data-burst="5">5장</button>
-        </div>
-      </div>
+    <div id="shutterbar">
+      <a class="rbtn" id="galBtn" href="gallery.html" title="갤러리"><i class="fa-solid fa-images"></i></a>
+      <button class="shutter" id="shotBtn" title="찍기"></button>
+      <button class="rbtn" id="camFlip" title="카메라 바꾸기"><i class="fa-solid fa-camera-rotate"></i></button>
     </div>
   </div>
 
-  <div class="pan" id="panC">
-    <div class="ph"><i class="fa-solid fa-camera"></i>카메라</div>
-    <div class="pb">
-      <div class="row" style="margin-bottom:10px">
-        <button class="db" id="camBtn" style="flex-shrink:0"><i class="fa-solid fa-video"></i> 카메라 켜기</button>
-        <select class="inp" id="camSel" style="cursor:pointer"></select>
-      </div>
-
-      <div id="camBox">
-        <video id="camVid" playsinline muted></video>
-        <canvas id="bgCv" style="display:none"></canvas>
-        <canvas id="ovCv"></canvas>
-        <div id="camOff"><i class="fa-solid fa-video-slash fa-2x"></i><span>카메라가 꺼져 있어요</span></div>
-        <div id="cdown"></div>
-        <div id="flash"></div>
-        <div id="armBadge"><i class="fa-solid fa-bolt"></i><span id="armTxt">준비</span></div>
-      </div>
-
-      <div class="gauge" id="gaugeWrap">
-        <div class="glb"><span id="gaugeLabel">동작을 기다리는 중</span><span class="num" id="gaugePct"></span></div>
-        <div class="gtrack"><div class="gfill" id="gaugeFill"></div></div>
-      </div>
-
-      <button class="db go" id="shotBtn" disabled><i class="fa-solid fa-camera-retro"></i> 손으로 찍기</button>
-      <div class="privnote" id="privNote">찍은 사진은 이 컴퓨터 밖으로 나가지 않아요</div>
-    </div>
-  </div>
-
-  <div class="pan" id="panR">
-    <div class="ph"><i class="fa-solid fa-images"></i>지금 &amp; 방금 찍은 사진</div>
-    <div class="pb">
-      <div class="answer idk" id="liveNow">카메라를 켜 주세요</div>
-
-      <div class="sec2">
-        <div class="st">방금 찍은 사진</div>
-        <div id="strip"></div>
-        <div class="hint" id="stripHint">아직 찍은 사진이 없어요.<br>동작을 하면 저절로 찍혀요.</div>
-        <div class="row" style="margin-top:9px">
-          <a class="db" href="gallery.html" style="flex:1;justify-content:center;text-decoration:none">
-            <i class="fa-solid fa-images"></i> 갤러리로
-          </a>
-        </div>
-      </div>
-
-      <div class="sec2">
-        <div class="st">배경 바꾸기</div>
-        <select class="inp" id="bgSel" style="width:100%;cursor:pointer;margin-top:6px">
-          <option value="off">배경 그대로</option>
-          <option value="erase">배경 지우기</option>
-          <option value="blur">배경 흐리기</option>
-          <option value="green">초록 배경</option>
-          <option value="blue">파랑 배경</option>
-        </select>
-        <div class="hint">AI가 사람과 배경을 픽셀로 나눠요. 바꾼 배경 그대로 찍혀요.</div>
-      </div>
-
-      <div class="sec2">
-        <div class="st">사진 설정</div>
-        <label class="chk"><input type="checkbox" id="skelChk"><span>뼈대 선도 같이 찍기</span></label>
-        <label class="chk"><input type="checkbox" id="beepChk" checked><span>찰칵 소리 내기</span></label>
-      </div>
-    </div>
-  </div>
-
+  <div id="toast"></div>
 </div>
 
-<div id="toast"></div>
-
-<script src="lib/nav.js?v=1"></script>
-<script src="lib/i18n.js?v=1"></script>
-<script src="lib/tour.js?v=1"></script>
+<script src="lib/nav.js?v=2"></script>
+<script src="lib/i18n.js?v=2"></script>
+<script src="lib/tour.js?v=2"></script>
 <script src="vendor/tfjs/tf.min.js"></script>
-<script type="module" src="lib/shoot.js?v=1"></script>
+<script type="module" src="lib/app.js?v=2"></script>
 </body>
 </html>
