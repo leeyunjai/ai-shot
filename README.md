@@ -19,6 +19,9 @@ video, the mic audio and the photos never leave your computer.
 - **Hold** 0.2–3 s · **timer** now / 1 s / 3 s · **shots** 1 / 3 / 5.
 - **Backdrop** — the AI cuts you out of the background (erase, blur, green,
   blue) and the photo keeps what you see.
+- **Save mirrored** — on by default, so the photo matches the selfie
+  preview. Turn it off and it saves the way the camera actually sees, so
+  text in the background is not reversed.
 - Tap the big shutter to shoot by hand. The thumbnail beside it opens the
   gallery.
 
@@ -68,6 +71,8 @@ teaching, export, delete. Drop an exported zip back in to restore it.
 - **유지** 0.2~3초 · **세기** 바로/1초/3초 · **장수** 1/3/5장
 - **배경** — AI가 사람과 배경을 픽셀로 나눠 지우거나 흐리거나 색을 깝니다.
   화면에 보이는 그대로 사진에 남습니다.
+- **거울로 저장** — 기본은 켜짐이라 화면에 보이던 셀카 그대로 남습니다.
+  끄면 카메라가 실제로 본 방향으로 저장돼서 배경 글자가 뒤집히지 않습니다.
 - 큰 셔터를 톡 누르면 손으로 찍습니다. 옆 썸네일이 갤러리입니다.
 
 ## 학습
