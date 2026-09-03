@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI 샷 — 갤러리</title>
+<meta name="description" content="찍은 사진과 내가 가르친 제스처를 모아 둡니다.">
+<link rel="icon" type="image/png" href="assets/img/favicon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#FBF7EF">
+<link rel="stylesheet" href="assets/fonts/pretendard.css?v=1">
+<link rel="stylesheet" href="css/all.min.css?v=1">
+<link rel="stylesheet" href="css/ui.css?v=1">
+<link rel="stylesheet" href="css/theme-maker.css?v=1">
+<link rel="stylesheet" href="css/app.css?v=1">
+</head>
+<body>
+
+<header data-tab="gallery.html"></header>
+
+<div id="glMain" class="gal">
+
+  <div class="pan" id="panPhotos">
+    <div class="ph"><i class="fa-solid fa-images"></i>찍은 사진
+      <span class="st-badge" id="phCount"></span>
+      <span style="flex:1"></span>
+      <button class="db" id="phZip" disabled title="전부 zip 으로"><i class="fa-solid fa-file-zipper"></i></button>
+      <button class="db danger" id="phClear" disabled title="전부 지우기"><i class="fa-solid fa-trash"></i></button>
+    </div>
+    <div class="pb">
+      <div id="phEmpty" class="hint" style="margin-top:0;display:none">
+        <img src="assets/img/pibo-idea.png" alt="" style="width:110px;display:block;margin:18px auto 10px">
+        <div style="text-align:center;font-size:12.5px">
+          아직 찍은 사진이 없어요.<br>
+          <a href="index.html" style="color:var(--acc-ink)">촬영실</a>에서 동작으로 찍어 보세요.
+        </div>
+      </div>
+      <div id="phGrid"></div>
+    </div>
+  </div>
+
+  <div class="pan" id="panModels">
+    <div class="ph"><i class="fa-solid fa-hand-sparkles"></i>내가 가르친 제스처</div>
+    <div class="pb">
+      <div id="mdEmpty" class="hint" style="margin-top:0;display:none">
+        아직 만든 제스처가 없어요.<br>
+        <a href="train.html" style="color:var(--acc-ink)">제스처 만들기</a>에서 나만의 동작을 가르쳐 보세요.
+      </div>
+      <div style="overflow-x:auto">
+        <table id="mdTable" style="display:none">
+          <thead>
+            <tr><th>이름</th><th>무엇을 보나</th><th>동작</th><th>예시</th><th>맞힌 비율</th><th>만든 날</th><th></th></tr>
+          </thead>
+          <tbody id="mdBody"></tbody>
+        </table>
+      </div>
+
+      <div class="dropzone" id="dropZone">
+        내보낸 zip 파일을 여기에 놓으면 다시 들어와요. (눌러서 고르기)
+      </div>
+      <input type="file" id="impFile" accept=".zip" style="display:none">
+    </div>
+  </div>
+
+</div>
+
+<div id="viewer">
+  <div class="vbox">
+    <img id="vImg" alt="">
+    <div class="vbar">
+      <span class="vmeta" id="vMeta"></span>
+      <span style="flex:1"></span>
+      <button class="db" id="vDown"><i class="fa-solid fa-download"></i> 내려받기</button>
+      <button class="db danger" id="vDel"><i class="fa-solid fa-trash"></i> 지우기</button>
+      <button class="db" id="vClose"><i class="fa-solid fa-xmark"></i> 닫기</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script src="lib/nav.js?v=1"></script>
+<script src="lib/i18n.js?v=1"></script>
+<script src="lib/tour.js?v=1"></script>
+<script src="vendor/tfjs/tf.min.js"></script>
+<script src="lib/jszip.min.js"></script>
+<script type="module" src="lib/gallery.js?v=1"></script>
+</body>
+</html>

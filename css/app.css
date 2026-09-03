@@ -1,20 +1,8 @@
-/* 센스 랩 전용 스타일 — 공통 규격은 css/ui.css (파이보 랩과 동일) */
-/* 패널·단계·카드 등은 파이보 랩 분류툴(classify.html)의 규격을 그대로 옮겼다 */
+/* AI 샷 전용 스타일 — 색·글자체는 css/theme-maker.css 의 토큰을 그대로 쓴다 */
+/* 패널·버튼·카드 규격은 파이보 랩 계열과 같은 결을 유지한다 */
 
 html,body{height:100%;margin:0;overflow:hidden}
 body{display:flex;flex-direction:column}
-
-/* ── 단계 표시 (분류툴과 동일) ── */
-#steps{display:flex;align-items:center;gap:0;padding:11px 16px;background:var(--panel2);
-  border-bottom:1px solid var(--line);flex-shrink:0}
-.stp{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:var(--ink3)}
-.stp .cir{width:21px;height:21px;border-radius:50%;display:flex;align-items:center;justify-content:center;
-  background:var(--line);color:#fff;font-size:11px;font-weight:700}
-.stp.on{color:var(--acc-ink)}
-.stp.on .cir{background:var(--acc)}
-.stp.done .cir{background:var(--ok)}
-.stp.done{color:var(--ink2)}
-.stpline{flex:1;height:1px;background:var(--line);margin:0 12px;max-width:70px}
 
 /* ── 본문 3단 패널 ── */
 #glMain{flex:1;min-height:0;display:flex;gap:12px;padding:12px;box-sizing:border-box;background:var(--bg)}
@@ -26,13 +14,18 @@ body{display:flex;flex-direction:column}
 #panL{width:270px;flex-shrink:0}
 #panC{flex:1}
 #panR{width:320px;flex-shrink:0}
+.ph .st-badge{font-size:10.5px;font-weight:600;color:var(--ink3)}
+.ph .db{padding:4px 9px;font-size:11.5px}
 
+/* ── 공통 컨트롤 ── */
 .pb-label{font-size:11px;font-weight:700;color:var(--ink3);margin-bottom:6px}
 .row{display:flex;gap:6px}
 .inp{flex:1;min-width:0;border:1px solid var(--line);background:var(--panel2);
   border-radius:7px;padding:6px 9px;font-size:12px;font-family:inherit;color:var(--ink);outline:none}
 .inp:focus{border-color:var(--acc)}
 .hint{font-size:11px;color:var(--ink3);margin-top:9px;line-height:1.6}
+.sec2{margin-top:14px;padding-top:13px;border-top:1px solid var(--line-soft)}
+.sec2 .st{font-size:11.5px;font-weight:700;color:var(--ink2);margin-bottom:4px}
 
 .db{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);
   background:var(--panel);color:var(--ink2);border-radius:8px;
@@ -42,18 +35,89 @@ body{display:flex;flex-direction:column}
 .db.go{background:var(--acc);color:#fff;border-color:var(--acc)}
 .db.go:hover{background:var(--acc-ink);border-color:var(--acc-ink);color:#fff}
 .db.go:disabled{background:var(--acc);border-color:var(--acc);color:#fff}
-.db.warn{background:var(--warn);color:#fff;border-color:var(--warn)}
-.db.warn:hover{background:#C94A40;border-color:#C94A40;color:#fff}
 /* 지우기처럼 위험하지만 튀면 안 되는 버튼 — 평소엔 조용히, 올리면 경고색 */
 .db.danger{color:var(--ink3)}
 .db.danger:hover{border-color:var(--warn);color:var(--warn);background:transparent}
+.db{-webkit-user-select:none;user-select:none;touch-action:manipulation}
 
-/* ── 소스(무엇을 볼까) 선택 ── */
+.chk{display:flex;align-items:center;gap:7px;margin-top:7px;font-size:12px;color:var(--ink2);
+  font-weight:600;cursor:pointer}
+.chk input{width:15px;height:15px;accent-color:var(--acc);cursor:pointer}
+
+/* ── 소스 선택 ── */
 .srcpick{display:flex;gap:6px}
 .srcpick .db{flex:1;justify-content:center;padding:9px 6px}
 .srcpick .db.on{background:var(--acc-soft);border-color:var(--acc);color:var(--acc-ink)}
 
-/* ── 종류(클래스) 카드 (분류툴과 동일) ── */
+/* ── 갈래 토글 · 분절 버튼 ── */
+#variantRow{display:flex;align-items:center;gap:8px;margin-top:7px;flex-wrap:wrap}
+#variantRow .lb2{font-size:11px;color:var(--ink3);font-weight:700;flex-shrink:0}
+.seg{display:inline-flex;border:1.5px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{border:0;background:transparent;padding:6px 13px;font-size:12px;font-weight:700;
+  color:var(--ink2);cursor:pointer;display:flex;gap:5px;align-items:center;font-family:inherit}
+.seg button+button{border-left:1.5px solid var(--line)}
+.seg button.on{background:var(--acc-soft);color:var(--acc-ink)}
+
+/* ── 유지 시간 슬라이더 ── */
+.thr .lb{display:flex;justify-content:space-between;font-size:11px;font-weight:600;color:var(--ink2);margin-bottom:5px}
+.thr input[type=range]{width:100%;accent-color:var(--acc)}
+
+/* ── 카메라 ── */
+#panC .pb{display:flex;flex-direction:column;min-height:0}
+#camSel{max-width:340px}
+#camBox{position:relative;background:#0C1114;border-radius:10px;overflow:hidden;
+  flex:0 0 auto;aspect-ratio:4/3;height:min(44vh,420px);width:auto;max-width:100%;margin:0 auto}
+#camVid{width:100%;height:100%;object-fit:contain;display:block;transform:scaleX(-1)}
+#ovCv,#bgCv{position:absolute;inset:0;width:100%;height:100%;transform:scaleX(-1);pointer-events:none}
+#camOff{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:8px;color:#56646C;font-size:12px;font-weight:600}
+#micCv{position:absolute;inset:0;width:100%;height:100%}
+
+/* 카운트다운 큰 숫자 */
+#cdown{position:absolute;inset:0;display:none;align-items:center;justify-content:center;
+  font-size:clamp(60px,18vh,140px);font-weight:800;color:#fff;
+  text-shadow:0 4px 24px rgba(0,0,0,.55);pointer-events:none}
+#cdown.on{display:flex;animation:cdpop .5s ease-out}
+@keyframes cdpop{from{transform:scale(1.6);opacity:.2}to{transform:scale(1);opacity:1}}
+
+/* 찰칵 — 흰 막이 한 번 번쩍 */
+#flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none}
+#flash.on{animation:flash .32s ease-out}
+@keyframes flash{0%{opacity:.85}100%{opacity:0}}
+
+/* 지금 걸려 있는 셔터 동작 */
+#armBadge{position:absolute;left:9px;top:9px;display:flex;align-items:center;gap:6px;
+  padding:5px 10px;border-radius:999px;background:rgba(12,17,20,.55);color:#fff;
+  font-size:11.5px;font-weight:700;backdrop-filter:blur(3px);pointer-events:none;opacity:.55}
+#armBadge.on{opacity:1;background:rgba(31,95,122,.8)}
+
+/* ── 셔터 게이지 ── */
+.gauge{flex-shrink:0;margin-top:10px}
+.gauge .glb{display:flex;justify-content:space-between;font-size:11px;color:var(--ink3);
+  font-weight:600;margin-bottom:5px}
+.gauge .gtrack{height:8px;border-radius:4px;background:var(--line-soft);overflow:hidden}
+.gauge .gfill{height:100%;width:0;background:var(--acc);border-radius:4px;transition:width .08s linear}
+.gauge.armed .glb{color:var(--acc-ink)}
+.gauge.firing .gfill{background:var(--ok)}
+.gauge.firing .glb{color:var(--ok)}
+
+#shotBtn{width:100%;margin-top:10px;justify-content:center;padding:11px;flex-shrink:0}
+.privnote{flex-shrink:0;text-align:center;font-size:11px;color:var(--ink3);margin-top:8px;font-weight:600}
+
+/* ── 지금 보이는 것 ── */
+.answer{margin-top:0;margin-bottom:4px;padding:14px 10px;border-radius:10px;background:var(--panel2);
+  text-align:center;font-size:19px;font-weight:800;color:var(--ink);min-height:52px;
+  display:flex;align-items:center;justify-content:center;overflow-wrap:anywhere}
+.answer.sure{background:var(--acc-soft);color:var(--acc-ink)}
+.answer.idk{color:var(--ink3)}
+
+/* ── 방금 찍은 사진 스트립 ── */
+#strip{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+#strip a{display:block;line-height:0;border-radius:6px;overflow:hidden;border:1px solid var(--line-soft)}
+#strip img{width:56px;height:56px;object-fit:cover;display:block;transition:transform .12s}
+#strip a:hover img{transform:scale(1.08)}
+
+/* ── 동작(클래스) 카드 — 제스처 만들기 ── */
 .cls{border:1px solid var(--line);border-radius:9px;padding:9px 10px;margin-top:8px;cursor:pointer;transition:all .12s}
 .cls:hover{border-color:var(--acc)}
 .cls.on{border-color:var(--acc);background:var(--acc-soft)}
@@ -68,46 +132,12 @@ body{display:flex;flex-direction:column}
   transition:transform .1s,outline-color .1s;outline:2px solid transparent}
 .thumbs img:hover{transform:scale(2.2);outline-color:var(--warn);position:relative;z-index:5}
 
-/* ── 카메라 ── */
-#panC .pb{display:flex;flex-direction:column;min-height:0}
-#camSel{max-width:340px}
-#camBox{position:relative;background:#0C1114;border-radius:10px;overflow:hidden;
-  flex:0 0 auto;aspect-ratio:4/3;height:min(40vh,360px);width:auto;max-width:100%;margin:0 auto}
-#camVid{width:100%;height:100%;object-fit:contain;display:block;transform:scaleX(-1)}
-#ovCv{position:absolute;inset:0;width:100%;height:100%;transform:scaleX(-1);pointer-events:none}
-#bgCv{position:absolute;inset:0;width:100%;height:100%;transform:scaleX(-1);pointer-events:none}
-#camOff{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:8px;color:#56646C;font-size:12px;font-weight:600}
-#micCv{position:absolute;inset:0;width:100%;height:100%}
-
-/* ── 갈래 토글 (한 손/두 손 · 상반신/전신) ── */
-#variantRow{display:flex;align-items:center;gap:8px;margin-top:7px;flex-wrap:wrap}
-#variantRow .lb2{font-size:11px;color:var(--ink3);font-weight:700;flex-shrink:0}
-.seg{display:inline-flex;border:1.5px solid var(--line);border-radius:8px;overflow:hidden}
-.seg button{border:0;background:transparent;padding:4px 11px;font-size:12px;font-weight:700;
-  color:var(--ink2);cursor:pointer;display:flex;gap:5px;align-items:center;font-family:inherit}
-.seg button+button{border-left:1.5px solid var(--line)}
-.seg button.on{background:var(--acc-soft);color:var(--acc-ink)}
-#capBtn,.selinfo,#panC .row{flex-shrink:0}
 .selinfo{margin-top:10px;padding:8px 10px;border-radius:8px;background:var(--panel2);
-  font-size:12px;color:var(--ink2);font-weight:600;text-align:center}
+  font-size:12px;color:var(--ink2);font-weight:600;text-align:center;flex-shrink:0}
 .selinfo.on{background:var(--acc-soft);color:var(--acc-ink)}
-#capBtn{width:100%;margin-top:9px;justify-content:center;padding:11px}
-.privnote{flex-shrink:0;text-align:center;font-size:11px;color:var(--ink3);margin-top:8px;font-weight:600}
+#capBtn{width:100%;margin-top:9px;justify-content:center;padding:11px;flex-shrink:0}
 
-/* ── 좌표 관찰 패널 ── */
-#numsWrap{flex-shrink:0;margin-top:10px}
-#numsHead{display:flex;align-items:center;gap:7px;font-size:11.5px;font-weight:700;color:var(--ink2)}
-#numsHead .st-badge{font-size:10.5px;font-weight:600;color:var(--ink3)}
-#numsBox{margin-top:6px;max-height:118px;overflow-y:auto;border:1px solid var(--line-soft);
-  border-radius:8px;background:var(--panel2);padding:6px 8px}
-#numsBox table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:10.5px;color:var(--ink2)}
-#numsBox th{text-align:right;font-weight:600;color:var(--ink3);padding:1px 4px;position:sticky;top:-6px;background:var(--panel2)}
-#numsBox th:first-child,#numsBox td:first-child{text-align:left;color:var(--ink3)}
-#numsBox td{text-align:right;padding:1px 4px;font-variant-numeric:tabular-nums;white-space:nowrap}
-#numsEmpty{font-size:11px;color:var(--ink3);text-align:center;padding:10px 0}
-
-/* ── 진행 / 그래프 ── */
+/* ── 학습 진행 / 그래프 ── */
 .prg{margin-bottom:12px}
 .prg .lb{display:flex;justify-content:space-between;font-size:11px;color:var(--ink3);font-weight:600;margin-bottom:5px}
 .track{height:6px;border-radius:3px;background:var(--line-soft);overflow:hidden}
@@ -118,118 +148,50 @@ body{display:flex;flex-direction:column}
 .chart-legend i{display:inline-block;width:14px;height:3px;border-radius:2px;margin-right:4px;vertical-align:middle}
 .chart-legend .lg-acc{background:var(--acc)}
 .chart-legend .lg-warn{background:var(--warn)}
+.accbig{font-size:23px;font-weight:800;color:var(--acc-ink);font-variant-numeric:tabular-nums}
+.accbig + small{font-size:11px;color:var(--ink3);margin-left:6px;font-weight:600}
 
-/* ── 예측 막대 (분류툴과 동일) ── */
-.bar{margin-bottom:7px}
-.bar .bl{display:flex;justify-content:space-between;font-size:11.5px;font-weight:600;color:var(--ink2);margin-bottom:3px}
-.bar .bt{height:8px;border-radius:4px;background:var(--line-soft);overflow:hidden}
-.bar .bf{height:100%;width:0;background:var(--ink3);transition:width .15s}
-.bar.top .bl{color:var(--acc-ink)}
-.bar.top .bf{background:var(--acc)}
+/* ── 갤러리 ── */
+#glMain.gal{flex-direction:column;overflow-y:auto}
+#glMain.gal .pan{flex:0 0 auto}
+#glMain.gal #panPhotos{flex:1 1 auto;min-height:280px}
+#phGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:8px}
+.shot{position:relative;border:1px solid var(--line-soft);border-radius:9px;overflow:hidden;
+  padding:0;background:var(--panel2);cursor:pointer;aspect-ratio:4/3;transition:all .12s}
+.shot:hover{border-color:var(--acc);transform:translateY(-1px)}
+.shot img{width:100%;height:100%;object-fit:cover;display:block}
+.shot .tag{position:absolute;left:6px;bottom:6px;max-width:calc(100% - 12px);
+  padding:3px 8px;border-radius:999px;background:rgba(12,17,20,.6);color:#fff;
+  font-size:10.5px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
-/* ── 결과 / 혼동행렬(헷갈린 표) ── */
-.sec2{border-top:1px solid var(--line-soft);margin-top:13px;padding-top:12px}
-.sec2 .st{font-size:11px;font-weight:700;color:var(--ink3);margin-bottom:8px;
-  text-transform:uppercase;letter-spacing:.04em}
-.accbig{font-size:22px;font-weight:800;color:var(--acc-ink);font-variant-numeric:tabular-nums}
-.accbig small{font-size:12px;color:var(--ink3);font-weight:600;margin-left:6px}
-#cmWrap{overflow-x:auto;margin-top:8px}
-#cmWrap table{border-collapse:collapse;font-size:10.5px;margin:0 auto}
-#cmWrap th{font-weight:600;color:var(--ink3);padding:3px 6px;max-width:64px;overflow:hidden;
-  text-overflow:ellipsis;white-space:nowrap}
-#cmWrap td{border:1px solid var(--line-soft);padding:0;text-align:center;min-width:34px;height:26px;
-  font-variant-numeric:tabular-nums;font-weight:700;color:var(--ink2)}
-#cmWrap td.diag{color:var(--acc-deep)}
-.cm-note{font-size:10.5px;color:var(--ink3);margin-top:6px;line-height:1.5;text-align:center}
-
-/* ── 저장 목록 ── */
-.saved{display:flex;align-items:center;gap:6px;padding:6px 9px;border-radius:7px;
-  background:var(--panel2);margin-bottom:5px;font-size:11.5px}
-.saved .nm{flex:1;font-weight:700;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.saved .mt{color:var(--ink3);flex-shrink:0;font-size:10.5px}
-.saved button{border:0;background:none;color:var(--ink3);cursor:pointer;padding:2px 3px}
-.saved button:hover{color:var(--warn)}
-
-/* ── 시험실 ── */
-.modes{display:flex;gap:6px;padding:11px 16px;background:var(--panel2);border-bottom:1px solid var(--line);flex-shrink:0}
-.modes .db.on{background:var(--acc-soft);border-color:var(--acc);color:var(--acc-ink)}
-.mradio{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:9px;
-  padding:8px 10px;margin-top:8px;cursor:pointer;transition:all .12s;font-size:12px}
-.mradio:hover{border-color:var(--acc)}
-.mradio.on{border-color:var(--acc);background:var(--acc-soft)}
-.mradio .nm{flex:1;font-weight:700;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.mradio .mt{font-size:10.5px;color:var(--ink3);flex-shrink:0}
-.thr{margin-top:13px}
-.thr .lb{display:flex;justify-content:space-between;font-size:11px;font-weight:600;color:var(--ink2);margin-bottom:5px}
-.thr input[type=range]{width:100%}
-.answer{margin-top:4px;margin-bottom:11px;padding:14px 10px;border-radius:10px;background:var(--panel2);
-  text-align:center;font-size:19px;font-weight:800;color:var(--ink);min-height:52px;
-  display:flex;align-items:center;justify-content:center;overflow-wrap:anywhere}
-.answer.sure{background:var(--acc-soft);color:var(--acc-ink)}
-.answer.idk{color:var(--ink3)}
-.srcstate{display:flex;align-items:center;gap:6px;padding:6px 9px;border-radius:7px;background:var(--panel2);
-  margin-bottom:5px;font-size:11.5px}
-.srcstate .sn{font-weight:700;color:var(--ink2);width:64px;flex-shrink:0}
-.srcstate .sv{flex:1;font-weight:700;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.srcstate .sv.idk,.srcstate .sv.none{color:var(--ink3);font-weight:600}
-.srcstate .sp2{font-size:10.5px;color:var(--ink3);flex-shrink:0;font-variant-numeric:tabular-nums}
-
-/* ── 규칙표 ── */
-.rule{border:1px solid var(--line);border-radius:9px;padding:9px 10px;margin-top:8px}
-.rule .rtop{display:flex;align-items:center;gap:6px;margin-bottom:7px}
-.rule .rtop .inp{font-weight:700}
-.rule .del{border:0;background:none;color:var(--ink3);cursor:pointer;padding:2px 3px;font-size:11px}
-.rule .del:hover{color:var(--warn)}
-.rule .conds{display:flex;flex-direction:column;gap:5px}
-.rcond{display:flex;align-items:center;gap:6px;font-size:11.5px}
-.rcond .sn{width:38px;flex-shrink:0;font-weight:700;color:var(--ink2)}
-.rcond select{flex:1}
-.rule .op{display:flex;gap:4px;margin-top:7px;align-items:center}
-.rule .op .lb2{font-size:10.5px;color:var(--ink3);font-weight:600;margin-right:2px}
-.rule .op button{border:1px solid var(--line);background:var(--panel2);border-radius:6px;padding:3px 10px;
-  font-size:10.5px;font-weight:700;cursor:pointer;color:var(--ink3);font-family:inherit}
-.rule .op button.on{background:var(--acc-soft);border-color:var(--acc);color:var(--acc-ink)}
-.rule.fired{border-color:var(--acc);background:var(--acc-soft)}
-
-/* ── 순서 놀이 (순서도) ── */
-.seq-node{width:fit-content;margin:0 auto;padding:5px 16px;border-radius:999px;border:1px solid var(--line);
-  background:var(--panel2);font-size:11.5px;font-weight:700;color:var(--ink2)}
-.seq-node.goal.done{border-color:var(--ok);background:#EEF5EF;color:var(--ok)}
-.seq-arrow{width:0;height:16px;border-left:2px solid var(--line);margin:0 auto;position:relative}
-.seq-arrow::after{content:'';position:absolute;left:-5px;bottom:-1px;border:4px solid transparent;
-  border-top-color:var(--line)}
-.seq-step{border:1px solid var(--line);border-radius:9px;padding:8px 10px;transition:all .15s}
-.seq-step .top{display:flex;align-items:center;gap:7px}
-.seq-step .sq-idx{width:21px;height:21px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;
-  justify-content:center;background:var(--line);color:#fff;font-size:11px;font-weight:700}
-.seq-step select{flex:1}
-.seq-step .del{border:0;background:none;color:var(--ink3);cursor:pointer;padding:2px 3px;font-size:11px}
-.seq-step .del:hover{color:var(--warn)}
-.seq-step .sq-track{height:5px;border-radius:3px;background:var(--line-soft);overflow:hidden;margin-top:7px}
-.seq-step .sq-fill{height:100%;width:0;background:var(--acc);border-radius:3px;transition:width .1s linear}
-.seq-step.cur{border-color:var(--acc);background:var(--acc-soft)}
-.seq-step.cur .sq-idx{background:var(--acc)}
-.seq-step.done{border-color:var(--ok)}
-.seq-step.done .sq-idx{background:var(--ok)}
-.seq-step.done .sq-fill{background:var(--ok)}
-
-/* ── 보관함 표 ── */
-#stTable{width:100%;border-collapse:collapse;font-size:12px}
-#stTable th{text-align:left;font-size:11px;color:var(--ink3);font-weight:700;padding:7px 9px;
+#mdTable{width:100%;border-collapse:collapse;font-size:12px}
+#mdTable th{text-align:left;font-size:11px;color:var(--ink3);font-weight:700;padding:7px 9px;
   border-bottom:1px solid var(--line)}
-#stTable td{padding:8px 9px;border-bottom:1px solid var(--line-soft);color:var(--ink2);vertical-align:middle}
-#stTable td.nm{font-weight:700;color:var(--ink)}
-#stTable .num{font-variant-numeric:tabular-nums}
-#stTable .db{padding:4px 9px;font-size:11.5px}
+#mdTable td{padding:8px 9px;border-bottom:1px solid var(--line-soft);color:var(--ink2);vertical-align:middle}
+#mdTable td.nm{font-weight:700;color:var(--ink)}
+#mdTable .num{font-variant-numeric:tabular-nums}
+#mdTable .db{padding:4px 9px;font-size:11.5px}
+
 .dropzone{border:1.5px dashed var(--line);border-radius:10px;padding:18px;text-align:center;
   color:var(--ink3);font-size:12px;font-weight:600;margin-top:12px;transition:all .15s;cursor:pointer}
 .dropzone:hover,.dropzone.over{border-color:var(--acc);color:var(--acc-ink);background:var(--acc-soft)}
+
+/* ── 사진 크게 보기 ── */
+#viewer{position:fixed;inset:0;z-index:250;display:none;align-items:center;justify-content:center;
+  background:rgba(42,38,32,.72);padding:18px}
+#viewer.on{display:flex}
+#viewer .vbox{background:var(--panel);border-radius:12px;overflow:hidden;max-width:min(96vw,1100px);
+  max-height:92vh;display:flex;flex-direction:column;box-shadow:0 12px 40px rgba(0,0,0,.35)}
+#vImg{max-width:100%;max-height:calc(92vh - 62px);object-fit:contain;display:block;background:#0C1114}
+.vbar{display:flex;align-items:center;gap:6px;padding:10px 12px;border-top:1px solid var(--line-soft);
+  flex-wrap:wrap}
+.vmeta{font-size:11.5px;color:var(--ink3);font-weight:600}
 
 /* ── 튜토리얼 (파이보 말풍선 안내) ── */
 .tour{position:fixed;inset:0;z-index:300}
 .tour-spot{position:fixed;border-radius:10px;pointer-events:none;
   border:2px solid var(--acc);
-  box-shadow:0 0 0 9999px rgba(42,38,32,.45);   /* 구멍 뚫린 어두운 막 */
+  box-shadow:0 0 0 9999px rgba(42,38,32,.45);
   transition:all .25s ease}
 .tour-bubble{position:fixed;background:var(--panel);border:1px solid var(--line);
   border-radius:12px;box-shadow:0 8px 24px rgba(42,38,32,.25);padding:13px 14px 11px;
@@ -244,18 +206,13 @@ body{display:flex;flex-direction:column}
 .tour-skip{font-size:11.5px;padding:5px 9px}
 .tour-next{font-size:12.5px;padding:5px 14px}
 
-/* ── 토스트 (분류툴과 동일) ── */
-#toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:200;
+/* ── 토스트 ── */
+#toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:400;
   background:#233642;color:#fff;font-size:12.5px;font-weight:600;padding:10px 18px;border-radius:9px;
   box-shadow:0 6px 20px rgba(0,0,0,.2);opacity:0;pointer-events:none;transition:opacity .2s}
 #toast.on{opacity:1}
 
 /* ── 반응형 ── */
-.db{-webkit-user-select:none;user-select:none;touch-action:manipulation}
-#steps{overflow-x:auto}
-#steps .stp{white-space:nowrap;flex-shrink:0}
-#steps .stpline{min-width:16px;flex-shrink:1}
-
 @media (max-width:1100px){
   html,body{overflow:auto;height:auto;min-height:100vh}
   #glMain{flex-direction:column;overflow:visible}
@@ -264,12 +221,12 @@ body{display:flex;flex-direction:column}
   #panC{flex:1 1 auto}
   #camBox{width:100%;height:auto;max-height:none}
   .thumbs{max-height:96px}
+  #glMain.gal{overflow:visible}
 }
 
 @media (max-width:700px){
   /* 폰에서는 전체 글자를 한 단계 키운다. 입력칸은 16px — iOS 포커스 확대 방지 */
   body{font-size:15px}
-  /* 헤더는 스크롤 대신 크기를 줄여 한 줄에 맞춘다 */
   header{margin:6px 6px 0;padding:0 8px;gap:4px}
   header h1{font-size:15px;padding-right:6px;flex-shrink:0;letter-spacing:0}
   header h1 img{height:24px}
@@ -279,67 +236,47 @@ body{display:flex;flex-direction:column}
   #langToggle{font-size:13px !important;padding:6px 8px !important;min-width:38px !important;margin-right:0}
   .hbtn{width:30px;height:30px;font-size:12px}
   #camSel{max-width:none}
-  /* 단계 표시줄: 스크롤 대신 폭에 맞춰 축소 */
-  #steps{padding:10px 8px;overflow:visible;justify-content:space-between}
-  #steps .stpline{min-width:4px}
-  .stp{font-size:12px;gap:4px}
-  .stp .cir{width:20px;height:20px;font-size:11px}
-  .stpline{margin:0 4px}
-  .modes{flex-wrap:wrap;padding:9px 10px}
-  .modes .db{font-size:14px;padding:9px 13px}
-  #modeHint{display:none}
   #glMain{padding:8px;gap:8px}
   .pan > .ph{font-size:14.5px;padding:12px 13px}
   .pan > .pb{padding:11px}
   .db{font-size:14px;padding:9px 13px}
+  .ph .db{padding:6px 10px;font-size:13px}
   .srcpick .db{padding:11px 4px;font-size:14px}
-  .inp,select.inp,.params input{font-size:16px;padding:9px 11px}
+  .seg button{font-size:13.5px;padding:8px 14px}
+  .inp,select.inp{font-size:16px;padding:9px 11px}
   .hint{font-size:13px;line-height:1.65}
+  .pb-label{font-size:13px}
+  .sec2 .st{font-size:12.5px}
+  .chk{font-size:13.5px}
+  .thr .lb{font-size:13px}
+  input[type=range]::-webkit-slider-thumb{width:20px;height:20px}
+  .gauge .glb{font-size:12.5px}
+  .gauge .gtrack{height:10px}
+  #armBadge{font-size:12.5px}
+  .answer{font-size:20px;min-height:60px}
+  #strip img{width:64px;height:64px}
   .cls{padding:11px 12px}
   .cls .nm{font-size:14.5px}
   .cls .ct{font-size:12.5px}
   .thumbs img{width:40px;height:40px}
   .selinfo{font-size:14px;padding:10px}
-  #capBtn,#trainBtn{font-size:15px;padding:13px}
+  #capBtn,#trainBtn,#shotBtn{font-size:15px;padding:13px}
   .privnote{font-size:12.5px}
-  #numsHead{font-size:13px}
-  #numsHead .st-badge{font-size:12px}
-  #numsBox table{font-size:12px}
-  #numsEmpty{font-size:12.5px}
   .prg .lb{font-size:12.5px}
   .chart-legend{font-size:12px}
   .accbig{font-size:26px}
-  .accbig small{font-size:13px}
-  #cmWrap table{font-size:12.5px}
-  #cmWrap td{min-width:40px;height:30px}
-  .cm-note{font-size:12px}
-  .sec2 .st{font-size:12.5px}
-  .pb-label{font-size:13px}
-  .mradio{padding:11px 12px;font-size:13.5px}
-  .mradio .nm{font-size:14.5px}
-  .mradio .mt{font-size:12px}
-  .thr .lb{font-size:13px}
-  input[type=range]::-webkit-slider-thumb{width:20px;height:20px}
-  .answer{font-size:20px;min-height:60px}
-  .bar .bl{font-size:13px}
-  .bar .bt{height:10px}
-  .srcstate{font-size:13.5px;padding:9px 10px}
-  .srcstate .sp2{font-size:12px}
-  .rule{padding:11px 12px}
-  .rcond{font-size:13.5px}
-  .rcond .sn{width:46px}
-  .rule .op .lb2{font-size:12px}
-  .rule .op button{font-size:12.5px;padding:6px 13px}
-  #stTable{font-size:13.5px}
-  #stTable th{font-size:12px;padding:8px 7px}
-  #stTable td{padding:9px 7px}
+  .accbig + small{font-size:13px}
+  #phGrid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}
+  #mdTable{font-size:13.5px}
+  #mdTable th{font-size:12px;padding:8px 7px}
+  #mdTable td{padding:9px 7px}
   .dropzone{padding:16px;font-size:13.5px}
+  .vbar{padding:10px}
   #toast{font-size:14px}
 }
 
 @media (max-width:420px){
-  /* 아주 좁은 폰: 로고(시그니처)는 남기고 여백을 더 조인다.
-     그래도 안 되는 초소형 화면만 가로 스크롤로 넘긴다 */
+  /* 아주 좁은 폰: 로고(시그니처)는 남기고 여백을 더 조인다 */
   header{margin:4px 4px 0;padding:0 6px;gap:2px;overflow-x:auto;scrollbar-width:none}
   header::-webkit-scrollbar{display:none}
   header h1 img{height:22px}
@@ -352,7 +289,4 @@ body{display:flex;flex-direction:column}
 @media (max-width:365px){
   /* 초소형: 로고만 남기고 서비스명 글자를 접는다 */
   header h1 .brand-txt{display:none}
-  .stp{font-size:11px;gap:3px}
-  .stp .cir{width:18px;height:18px;font-size:10px}
-  .stpline{margin:0 3px}
 }

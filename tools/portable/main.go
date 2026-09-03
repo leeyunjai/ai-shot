@@ -1,4 +1,4 @@
-// Sense Lab portable — the whole site embedded in one exe.
+// AI Shot portable — the whole site embedded in one exe.
 package main
 
 import (
@@ -44,7 +44,7 @@ func main() {
 	}
 
 	url := fmt.Sprintf("http://localhost:%d", port)
-	fmt.Println("Sense Lab -", url)
+	fmt.Println("AI Shot -", url)
 	fmt.Println("Close this window to stop.")
 
 	go func() {

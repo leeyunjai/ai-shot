@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI 샷 — 제스처 만들기</title>
+<meta name="description" content="나만의 동작을 가르쳐서 셔터로 씁니다.">
+<link rel="icon" type="image/png" href="assets/img/favicon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#FBF7EF">
+<link rel="stylesheet" href="assets/fonts/pretendard.css?v=1">
+<link rel="stylesheet" href="css/all.min.css?v=1">
+<link rel="stylesheet" href="css/ui.css?v=1">
+<link rel="stylesheet" href="css/theme-maker.css?v=1">
+<link rel="stylesheet" href="css/app.css?v=1">
+</head>
+<body>
+
+<header data-tab="train.html"></header>
+
+<div id="glMain">
+
+  <div class="pan" id="panL">
+    <div class="ph"><i class="fa-solid fa-list"></i>내 동작</div>
+    <div class="pb">
+      <div class="pb-label">무엇을 보고 배울까요?</div>
+      <div class="srcpick">
+        <button class="db on" data-src="hand"><i class="fa-solid fa-hand"></i> 손</button>
+        <button class="db" data-src="face"><i class="fa-solid fa-face-smile"></i> 얼굴</button>
+        <button class="db" data-src="pose"><i class="fa-solid fa-person"></i> 포즈</button>
+        <button class="db" data-src="sound"><i class="fa-solid fa-microphone"></i> 소리</button>
+      </div>
+      <div id="variantRow" style="display:none"></div>
+
+      <div class="sec2">
+        <div class="row">
+          <input class="inp" id="clsName" type="text" placeholder="동작 이름 (예: 브이)" maxlength="20">
+          <button class="db" id="clsAdd" title="동작 더하기"><i class="fa-solid fa-plus"></i></button>
+        </div>
+        <div id="clsList"></div>
+        <div class="hint" id="clsHint">
+          <i class="fa-solid fa-lightbulb"></i>셔터로 쓸 동작과, 그게 아닌 평소 모습을 각각 만들어요.<br>예: <b>브이</b> / <b>가만히</b>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pan" id="panC">
+    <div class="ph"><i class="fa-solid fa-camera"></i><span id="panCTitle">카메라 &amp; 예시</span></div>
+    <div class="pb">
+      <div class="row" style="margin-bottom:10px">
+        <button class="db" id="camBtn" style="flex-shrink:0"><i class="fa-solid fa-video"></i> 카메라 켜기</button>
+        <select class="inp" id="camSel" style="cursor:pointer"></select>
+      </div>
+
+      <div id="camBox">
+        <video id="camVid" playsinline muted></video>
+        <canvas id="ovCv"></canvas>
+        <canvas id="micCv" style="display:none"></canvas>
+        <div id="camOff"><i class="fa-solid fa-video-slash fa-2x"></i><span>카메라가 꺼져 있어요</span></div>
+      </div>
+      <div class="privnote" id="privNote">찍은 영상은 이 컴퓨터 밖으로 나가지 않아요</div>
+
+      <div class="selinfo" id="selInfo">동작을 골라 주세요</div>
+      <button class="db go" id="capBtn" disabled><i class="fa-solid fa-camera-retro"></i> 꾹 눌러서 예시 모으기</button>
+      <div class="hint" style="text-align:center">동작마다 20~40장이면 충분해요.</div>
+    </div>
+  </div>
+
+  <div class="pan" id="panR">
+    <div class="ph"><i class="fa-solid fa-graduation-cap"></i>배우기 &amp; 저장</div>
+    <div class="pb">
+      <button class="db go" id="trainBtn" disabled style="width:100%;justify-content:center;padding:11px">
+        <i class="fa-solid fa-graduation-cap"></i> 배우기 시작
+      </button>
+      <div class="hint" style="margin-top:6px;margin-bottom:10px">동작 2개에 예시를 모은 뒤에 눌러요.</div>
+
+      <div class="prg">
+        <div class="lb"><span id="prgLabel">준비 중</span><span id="prgPct"></span></div>
+        <div class="track"><div class="fill" id="prgFill"></div></div>
+      </div>
+
+      <div id="chartBox" style="display:none">
+        <canvas id="chart"></canvas>
+        <div class="chart-legend">
+          <span><i class="lg-acc"></i>맞힌 비율</span>
+          <span><i class="lg-warn"></i>오차</span>
+        </div>
+      </div>
+
+      <div class="sec2" id="resultSec" style="display:none">
+        <div class="st">결과</div>
+        <div><span class="accbig" id="accBig">0%</span><small id="accWord"></small></div>
+        <div class="hint" id="accNote"></div>
+      </div>
+
+      <div class="sec2">
+        <div class="st">저장하기</div>
+        <div class="row">
+          <input class="inp" id="mdlName" type="text" placeholder="이름 (예: 브이 셔터)" maxlength="30">
+          <button class="db go" id="mdlSave" disabled title="저장"><i class="fa-solid fa-floppy-disk"></i></button>
+        </div>
+        <div class="hint">저장하면 <a href="index.html" style="color:var(--acc-ink)">촬영실</a>의 셔터 목록에 바로 나와요.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div id="toast"></div>
+
+<script src="lib/nav.js?v=1"></script>
+<script src="lib/i18n.js?v=1"></script>
+<script src="lib/tour.js?v=1"></script>
+<script src="vendor/tfjs/tf.min.js"></script>
+<script type="module" src="lib/train.js?v=1"></script>
+</body>
+</html>

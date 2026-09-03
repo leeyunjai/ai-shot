@@ -1,7 +1,7 @@
 {
-  "name": "센스 랩",
-  "short_name": "센스 랩",
-  "description": "웹캠으로 몸의 좌표를 모아 AI를 직접 가르쳐 보는 수업용 웹앱",
+  "name": "AI 샷",
+  "short_name": "AI 샷",
+  "description": "손짓·표정·포즈·소리로 셔터를 누르는 수업용 카메라 웹앱",
   "start_url": "./index.html",
   "scope": "./",
   "display": "fullscreen",
