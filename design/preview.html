@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>더 메이커 UI — 컴포넌트 미리보기</title>
+<link rel="stylesheet" href="../assets/fonts/pretendard.css">
+<link rel="stylesheet" href="maker-ui.css">
+<style>
+  /* 미리보기 전용 — 실제 서비스에는 넣지 않는다 */
+  body{overflow:auto;height:auto;min-height:100vh}
+  .demo{max-width:960px;margin:0 auto;padding:20px 16px 60px;width:100%}
+  .demo h2{font-size:14px;font-weight:800;color:var(--ink);margin:28px 0 10px;
+    border-bottom:1px solid var(--line-soft);padding-bottom:6px}
+  .demo-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .demo .pan{margin-top:8px}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>더 메이커 UI</h1>
+  <span class="navlink on">학습실</span>
+  <a class="navlink" href="#">시험실</a>
+  <a class="navlink" href="#">보관함</a>
+  <span style="flex:1"></span>
+  <span class="badge ok">준비 완료</span>
+  <button class="lang-toggle" type="button">EN</button>
+</header>
+
+<div class="steps" id="steps" style="margin-top:8px">
+  <div class="stp done"><span class="cir">1</span>종류 만들기</div>
+  <div class="stpline"></div>
+  <div class="stp on"><span class="cir">2</span>예시 모으기</div>
+  <div class="stpline"></div>
+  <div class="stp"><span class="cir">3</span>배우기</div>
+</div>
+
+<div class="demo">
+
+  <h2>버튼</h2>
+  <div class="demo-row">
+    <button class="db">기본</button>
+    <button class="db on">토글 눌림</button>
+    <button class="db go">주 동작</button>
+    <button class="db go" disabled>주 동작 (비활성)</button>
+    <button class="db warn">강한 경고</button>
+    <button class="db danger">조용한 지우기</button>
+  </div>
+
+  <h2>입력</h2>
+  <div class="demo-row" style="max-width:520px">
+    <input class="inp" placeholder="이름 (예: 가위)">
+    <select class="inp"><option>골라 주세요</option><option>가위</option></select>
+  </div>
+  <div style="max-width:260px;margin-top:12px">
+    <div class="prg"><div class="lb"><span>확신 정도</span><span class="num">70%</span></div></div>
+    <input type="range" min="30" max="95" value="70">
+  </div>
+
+  <h2>패널 · 카드</h2>
+  <div class="pan" style="max-width:340px">
+    <div class="ph">종류</div>
+    <div class="pb">
+      <div class="pb-label">무엇을 보고 배울까요?</div>
+      <div class="cls on"><div class="top"><span class="nm">가위</span><span class="ct">12장</span></div></div>
+      <div class="cls"><div class="top"><span class="nm">바위</span><span class="ct">9장</span></div></div>
+      <div class="hint">종류를 누른 뒤 예시를 모아요.</div>
+      <div class="sec2">
+        <div class="st">저장하기</div>
+        <div class="saved"><span class="nm">가위바위보</span><span class="mt">손 · 3가지</span></div>
+      </div>
+    </div>
+  </div>
+
+  <h2>진행률 · 확률 막대 · 큰 답</h2>
+  <div style="max-width:340px">
+    <div class="prg">
+      <div class="lb"><span>배우는 중 32/50</span><span>맞힌 비율 91%</span></div>
+      <div class="track"><div class="fill" style="width:64%"></div></div>
+    </div>
+    <div class="bar top">
+      <div class="bl"><span>가위</span><span>86%</span></div>
+      <div class="bt"><div class="bf" style="width:86%"></div></div>
+    </div>
+    <div class="bar">
+      <div class="bl"><span>바위</span><span>11%</span></div>
+      <div class="bt"><div class="bf" style="width:11%"></div></div>
+    </div>
+    <div class="answer sure" style="margin-top:10px">가위</div>
+    <div class="answer idk" style="margin-top:8px">모르겠어요</div>
+  </div>
+
+  <h2>순서도</h2>
+  <div style="max-width:340px">
+    <div class="seq-node">시작</div>
+    <div class="seq-arrow"></div>
+    <div class="seq-step done">
+      <div class="top"><span class="sq-idx">1</span><select class="inp"><option>손: 보</option></select></div>
+      <div class="sq-track"><div class="sq-fill" style="width:100%"></div></div>
+    </div>
+    <div class="seq-arrow"></div>
+    <div class="seq-step cur">
+      <div class="top"><span class="sq-idx">2</span><select class="inp"><option>얼굴: 입 벌리기</option></select></div>
+      <div class="sq-track"><div class="sq-fill" style="width:45%"></div></div>
+    </div>
+    <div class="seq-arrow"></div>
+    <div class="seq-node goal">성공!</div>
+  </div>
+
+  <h2>표 · 파일 놓기</h2>
+  <table class="mk-table">
+    <tr><th>이름</th><th>무엇을 보나</th><th>맞힌 비율</th></tr>
+    <tr><td class="nm">가위바위보</td><td>손</td><td class="num">96%</td></tr>
+    <tr><td class="nm">몸동작</td><td>포즈</td><td class="num">92%</td></tr>
+  </table>
+  <div class="dropzone">내보낸 zip 파일을 여기에 놓으면 다시 들어와요.</div>
+
+</div>
+
+<div class="toast on" style="position:static;transform:none;margin:0 auto 30px;width:fit-content">저장했어요: 가위바위보</div>
+
+</body>
+</html>

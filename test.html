@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>센스 랩 — 시험실</title>
+<link rel="icon" type="image/png" href="assets/img/favicon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#FBF7EF">
+<link rel="stylesheet" href="assets/fonts/pretendard.css?v=23">
+<link rel="stylesheet" href="css/all.min.css?v=23">
+<link rel="stylesheet" href="css/ui.css?v=23">
+<link rel="stylesheet" href="css/theme-maker.css?v=23">
+<link rel="stylesheet" href="css/app.css?v=23">
+</head>
+<body>
+
+<header data-tab="test.html"></header>
+
+<div class="modes">
+  <button class="db on" id="modeTest">시험하기</button>
+  <button class="db" id="modeSeq">순서 놀이</button>
+  <span style="flex:1"></span>
+  <span style="font-size:11px;color:var(--ink3);font-weight:600;align-self:center" id="modeHint">보고, 시험하고, 규칙도 만들어요</span>
+</div>
+
+<div id="glMain">
+
+  <div class="pan" id="panL">
+    <div class="ph"><i class="fa-solid fa-list"></i>무엇을 볼까요?</div>
+    <div class="pb">
+      <div id="pickAll">
+        <div class="rcond"><span class="sn">손</span>
+          <select class="inp" id="selHand"></select></div>
+        <div class="rcond" style="margin-top:6px"><span class="sn">얼굴</span>
+          <select class="inp" id="selFace"></select></div>
+        <div class="rcond" style="margin-top:6px"><span class="sn">포즈</span>
+          <select class="inp" id="selPose"></select></div>
+        <div class="rcond" style="margin-top:6px"><span class="sn">소리</span>
+          <select class="inp" id="selSound"></select></div>
+        <div class="hint">그냥 보기는 배우지 않아도 보여요.<br>내 모델을 고르면 시험이 돼요.<br>소리를 켜면 마이크를 써요.</div>
+        <div class="hint" id="mdlEmpty" style="display:none">
+          아직 저장한 모델이 없어요.<br>
+          <a href="index.html" style="color:var(--acc-ink)">학습실</a>에서 만들어 보세요.
+        </div>
+      </div>
+
+      <div class="thr" id="thrBox" style="display:none">
+        <div class="lb"><span>확신 정도</span><span class="num" id="thrVal">70%</span></div>
+        <input type="range" id="thrSlider" min="30" max="95" value="70" step="5">
+        <div class="hint" style="margin-top:5px">이보다 덜 확실하면 "모르겠어요"가 나와요.</div>
+      </div>
+
+      <div class="sec2">
+        <div class="pb-label">배경 놀이</div>
+        <select class="inp" id="bgSel" style="width:100%;cursor:pointer">
+          <option value="off">배경 그대로</option>
+          <option value="erase">배경 지우기</option>
+          <option value="blur">배경 흐리기</option>
+          <option value="green">초록 배경</option>
+          <option value="blue">파랑 배경</option>
+        </select>
+        <div class="hint">AI가 사람과 배경을 나눠요.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pan" id="panC">
+    <div class="ph"><i class="fa-solid fa-camera"></i>카메라</div>
+    <div class="pb">
+      <div class="row" style="margin-bottom:10px">
+        <button class="db" id="camBtn" style="flex-shrink:0"><i class="fa-solid fa-video"></i> 카메라 켜기</button>
+        <select class="inp" id="camSel" style="cursor:pointer"></select>
+      </div>
+      <div id="camBox">
+        <video id="camVid" playsinline muted></video>
+        <canvas id="bgCv" style="display:none"></canvas>
+        <canvas id="ovCv"></canvas>
+        <div id="camOff"><i class="fa-solid fa-video-slash fa-2x"></i><span>카메라가 꺼져 있어요</span></div>
+      </div>
+      <div class="privnote">찍은 영상은 이 컴퓨터 밖으로 나가지 않아요</div>
+    </div>
+  </div>
+
+  <div class="pan" id="panR">
+    <div class="ph"><i class="fa-solid fa-chart-simple"></i>AI의 답</div>
+    <div class="pb">
+      <div class="answer idk" id="answer" style="display:none">카메라를 켜 주세요</div>
+
+      <div id="liveRows" style="margin-bottom:4px"></div>
+
+      <div id="sglOut" style="display:none">
+        <div class="sec2" style="margin-top:9px">
+          <div id="bars"></div>
+          <div class="hint" id="barsHint">막대가 길수록 AI가 그 답을 확신하는 거예요.</div>
+        </div>
+      </div>
+
+      <div id="cmbOut">
+        <div class="sec2">
+          <div class="st">규칙표</div>
+          <div class="hint" style="margin-top:2px">조건이 맞으면 위에 답이 나와요. 안 만들어도 돼요.</div>
+          <div id="ruleList"></div>
+          <button class="db" id="ruleAdd" style="width:100%;justify-content:center;margin-top:9px">
+            <i class="fa-solid fa-plus"></i> 규칙 더하기
+          </button>
+        </div>
+      </div>
+
+      <div id="seqOut" style="display:none">
+        <div id="seqRows" style="margin-bottom:8px"></div>
+        <div class="pb-label" style="margin-bottom:2px">순서도</div>
+        <div class="hint" style="margin-top:2px">순서대로 동작을 하면 한 칸씩 내려가요.</div>
+        <div id="seqFlow"></div>
+        <div class="row" style="margin-top:9px">
+          <button class="db" id="seqAdd" style="flex:1;justify-content:center">
+            <i class="fa-solid fa-plus"></i> 단계 더하기
+          </button>
+          <button class="db" id="seqReset" style="flex:1;justify-content:center">
+            <i class="fa-solid fa-rotate-left"></i> 처음부터
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div id="toast"></div>
+
+<script src="lib/nav.js?v=23"></script>
+<script src="lib/i18n.js?v=23"></script>
+<script src="lib/tour.js?v=23"></script>
+<script src="vendor/tfjs/tf.min.js"></script>
+<script type="module" src="lib/exam.js?v=23"></script>
+</body>
+</html>

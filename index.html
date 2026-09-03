@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>센스 랩 — 학습실</title>
+<meta name="description" content="웹캠으로 몸의 좌표를 모아 AI를 직접 가르쳐 보세요.">
+<link rel="icon" type="image/png" href="assets/img/favicon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#FBF7EF">
+<link rel="stylesheet" href="assets/fonts/pretendard.css?v=23">
+<link rel="stylesheet" href="css/all.min.css?v=23">
+<link rel="stylesheet" href="css/ui.css?v=23">
+<link rel="stylesheet" href="css/theme-maker.css?v=23">
+<link rel="stylesheet" href="css/app.css?v=23">
+</head>
+<body>
+
+<header data-tab="index.html"></header>
+
+<div id="steps">
+  <div class="stp on" id="s1"><span class="cir">1</span>종류 만들기</div>
+  <div class="stpline"></div>
+  <div class="stp" id="s2"><span class="cir">2</span>예시 모으기</div>
+  <div class="stpline"></div>
+  <div class="stp" id="s3"><span class="cir">3</span>배우기</div>
+  <div class="stpline"></div>
+  <div class="stp" id="s4"><span class="cir">4</span>저장하기</div>
+</div>
+
+<div id="glMain">
+
+  <div class="pan" id="panL">
+    <div class="ph"><i class="fa-solid fa-list"></i>종류</div>
+    <div class="pb">
+      <div class="pb-label">무엇을 보고 배울까요?</div>
+      <div class="srcpick">
+        <button class="db on" data-src="hand"><i class="fa-solid fa-hand"></i> 손</button>
+        <button class="db" data-src="face"><i class="fa-solid fa-face-smile"></i> 얼굴</button>
+        <button class="db" data-src="pose"><i class="fa-solid fa-person"></i> 포즈</button>
+        <button class="db" data-src="sound"><i class="fa-solid fa-microphone"></i> 소리</button>
+      </div>
+      <div id="variantRow" style="display:none"></div>
+
+      <div class="sec2">
+        <div class="row">
+          <input class="inp" id="clsName" type="text" placeholder="이름 (예: 가위)" maxlength="20">
+          <button class="db" id="clsAdd" title="종류 더하기"><i class="fa-solid fa-plus"></i></button>
+        </div>
+        <div id="clsList"></div>
+        <div class="hint" id="clsHint">
+          <i class="fa-solid fa-lightbulb"></i> 맞히고 싶은 것마다 종류를 만들어요.<br>
+          종류를 누른 뒤 예시를 모아요.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pan" id="panC">
+    <div class="ph"><i class="fa-solid fa-camera"></i><span id="panCTitle">카메라 &amp; 예시</span></div>
+    <div class="pb">
+      <div class="row" style="margin-bottom:10px">
+        <button class="db" id="camBtn" style="flex-shrink:0"><i class="fa-solid fa-video"></i> 카메라 켜기</button>
+        <select class="inp" id="camSel" style="cursor:pointer"></select>
+      </div>
+
+      <div id="camBox">
+        <video id="camVid" playsinline muted></video>
+        <canvas id="ovCv"></canvas>
+        <canvas id="micCv" style="display:none"></canvas>
+        <div id="camOff"><i class="fa-solid fa-video-slash fa-2x"></i><span>카메라가 꺼져 있어요</span></div>
+      </div>
+      <div class="privnote" id="privNote">찍은 영상은 이 컴퓨터 밖으로 나가지 않아요</div>
+
+      <div class="selinfo" id="selInfo">종류를 골라 주세요</div>
+      <button class="db go" id="capBtn" disabled><i class="fa-solid fa-camera-retro"></i> 꾹 눌러서 예시 모으기</button>
+
+      <div id="numsWrap">
+        <div id="numsHead"><i class="fa-solid fa-table-list"></i>AI가 보는 숫자
+          <span class="st-badge" id="numsState">안 보여요</span>
+          <span class="st-badge" id="faceSigLine" style="display:none;margin-left:auto;color:var(--acc-ink)"></span></div>
+        <div id="numsBox">
+          <div id="numsEmpty">카메라를 켜면 숫자가 나와요</div>
+          <table id="numsTable" style="display:none"></table>
+        </div>
+        <div class="hint" style="margin-top:5px">AI는 사진이 아니라 이 숫자를 봐요.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pan" id="panR">
+    <div class="ph"><i class="fa-solid fa-chart-simple"></i>배우기 &amp; 결과</div>
+    <div class="pb">
+      <button class="db go" id="trainBtn" disabled style="width:100%;justify-content:center;padding:11px">
+        <i class="fa-solid fa-graduation-cap"></i> 배우기 시작
+      </button>
+      <div class="hint" style="margin-top:6px;margin-bottom:10px">종류 2개에 예시를 모은 뒤에 눌러요.</div>
+
+      <div class="prg">
+        <div class="lb"><span id="prgLabel">준비 중</span><span id="prgPct"></span></div>
+        <div class="track"><div class="fill" id="prgFill"></div></div>
+      </div>
+
+      <div id="chartBox" style="display:none">
+        <canvas id="chart"></canvas>
+        <div class="chart-legend">
+          <span><i class="lg-acc"></i>맞힌 비율</span>
+          <span><i class="lg-warn"></i>오차</span>
+        </div>
+      </div>
+
+      <div class="sec2" id="resultSec" style="display:none">
+        <div class="st">결과</div>
+        <div><span class="accbig" id="accBig">0%</span><small id="accWord"></small></div>
+        <div id="cmWrap"></div>
+        <div class="cm-note">헷갈린 표 — 왼쪽이 진짜, 위쪽이 AI의 답이에요.<br>숫자가 대각선에 모이면 잘 배운 거예요.</div>
+      </div>
+
+      <div class="sec2">
+        <div class="st">저장하기</div>
+        <div class="row">
+          <input class="inp" id="mdlName" type="text" placeholder="모델 이름 (예: 가위바위보)" maxlength="30">
+          <button class="db go" id="mdlSave" disabled title="저장"><i class="fa-solid fa-floppy-disk"></i></button>
+        </div>
+        <div class="hint">저장한 모델은 <a href="test.html" style="color:var(--acc-ink)">시험실</a>과
+          <a href="storage.html" style="color:var(--acc-ink)">보관함</a>에서 볼 수 있어요.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div id="toast"></div>
+
+<script src="lib/nav.js?v=23"></script>
+<script src="lib/i18n.js?v=23"></script>
+<script src="lib/tour.js?v=23"></script>
+<script src="vendor/tfjs/tf.min.js"></script>
+<script type="module" src="lib/learn.js?v=23"></script>
+</body>
+</html>
