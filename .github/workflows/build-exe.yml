@@ -1,0 +1,55 @@
+name: Build SenseLab.exe
+
+on:
+  push:
+    tags: ['v*']        # 예: git tag v0.1.0 && git push origin v0.1.0
+  workflow_dispatch:     # Actions 탭에서 수동 실행도 가능
+    inputs:
+      tag:
+        description: '릴리스 태그 (예: v0.1.0). 비우면 릴리스 없이 빌드만'
+        required: false
+        default: ''
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write    # Release에 exe 첨부용
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+
+      - name: Stage site files
+        run: |
+          mkdir -p build/site
+          rsync -a \
+            --exclude='.git' --exclude='.github' --exclude='tools' --exclude='build' \
+            --exclude='docs' --exclude='design' --exclude='README.md' --exclude='DEVELOP.md' \
+            --exclude='wrangler.toml' --exclude='.assetsignore' --exclude='_headers' \
+            --exclude='.gitignore' --exclude='*.zip' --exclude='*.exe' \
+            ./ build/site/
+          cp tools/portable/main.go tools/portable/go.mod build/
+
+      - name: Embed icon
+        run: |
+          go install github.com/akavel/rsrc@v0.10.2
+          $(go env GOPATH)/bin/rsrc -ico tools/portable/icon.ico -o build/rsrc.syso
+
+      - name: Build exe
+        run: cd build && GOOS=windows GOARCH=amd64 go build -ldflags="-s -w" -o SenseLab.exe .
+
+      - name: Upload artifact (수동 실행용)
+        uses: actions/upload-artifact@v4
+        with:
+          name: SenseLab
+          path: build/SenseLab.exe
+
+      - name: Attach to Release (태그 push 또는 tag 입력 시)
+        if: startsWith(github.ref, 'refs/tags/') || inputs.tag != ''
+        uses: softprops/action-gh-release@v2
+        with:
+          files: build/SenseLab.exe
+          tag_name: ${{ inputs.tag || github.ref_name }}

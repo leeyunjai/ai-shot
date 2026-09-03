@@ -1,0 +1,9 @@
+# Cloudflare Workers 정적 배포 — 파이보 랩과 같은 방식 (잠금 없음, 자산만 서빙)
+# 배포: npx wrangler deploy
+# 워커 코드가 없으므로 요청이 워커 호출 수를 쓰지 않는다 (무료 플랜에서 무제한)
+# 다시 잠그려면: 파이보 랩의 시험 기간 커밋처럼 main + run_worker_first + src/ 를 되살린다
+name = "sense-lab"
+compatibility_date = "2026-08-01"
+
+[assets]
+directory = "."
